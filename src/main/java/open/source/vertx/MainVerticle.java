@@ -35,17 +35,31 @@ public class MainVerticle extends AbstractVerticle {
 		}
 	}
 
+	private void loadApplicationPropertiesFromConfigFile() {
+
+		// TODO
+		
+	}
+
+	private void initializeAndConfigureHttpServer(Promise<Void> promise) {
+
+		HttpServer httpServer = vertx.createHttpServer();
+		log.info("got -> (httpServer) {}", httpServer);
+
+		httpServer = httpServer.requestHandler(HTTP_SERVER_REQUEST_HANDLER);
+		log.info("got -> (httpServer) {}", httpServer);
+
+		httpServer = httpServer.listen(HTTP_SERVER_LISTENING_PORT,
+				httpServerAsyncResult -> rejectOrResolvePromise(promise, httpServerAsyncResult));
+		log.info("got -> (httpServer) {}", httpServer);
+	}
+
 	@Override
 	public void start(Promise<Void> promise) throws Exception {
 
 		log.info("start -> (promise) {}", promise);
-		HttpServer httpServer = vertx.createHttpServer();
-		log.info("got -> (httpServer) {}", httpServer);
-		httpServer = httpServer.requestHandler(HTTP_SERVER_REQUEST_HANDLER);
-		log.info("got -> (httpServer) {}", httpServer);
-		httpServer = httpServer.listen(HTTP_SERVER_LISTENING_PORT,
-				httpServerAsyncResult -> rejectOrResolvePromise(promise, httpServerAsyncResult));
-		log.info("got -> (httpServer) {}", httpServer);
+		loadApplicationPropertiesFromConfigFile();
+		initializeAndConfigureHttpServer(promise);
 	}
 
 }

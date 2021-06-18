@@ -51,10 +51,16 @@ http://localhost:8888/
 jps | grep "vert-x-application"
 ```
 
-
 ## Kill
+
+- Elegant
 ```
-sudo kill -9 `sudo lsof -t -i:8888`
+kill `lsof -t -i:8888`
+```
+
+- Forcefully
+```
+kill -9 `lsof -t -i:8888`
 ```
 
 
