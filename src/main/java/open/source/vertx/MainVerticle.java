@@ -23,6 +23,7 @@ public class MainVerticle extends AbstractVerticle {
 	private static final String HTTP_SERVER_HOST = "localhost";
 	private static final Integer HTTP_SERVER_LISTENING_PORT = 8888;
 	private static final String HTTP_SERVER_CONFIG_PATH = "/conf";
+	private static final String CONFIG_FILE_PATH = "config.json";
 
 
 	private static Handler<HttpServerRequest> HTTP_SERVER_REQUEST_HANDLER = (httpServerRequest) -> {
@@ -67,7 +68,7 @@ public class MainVerticle extends AbstractVerticle {
 		*/
 
 		JsonObject fileJsonObject = new JsonObject()
-				.put("path", "config.json");
+				.put("path", CONFIG_FILE_PATH);
 		ConfigStoreOptions fileStore = new ConfigStoreOptions()
 				.setType("file")
 				.setConfig(fileJsonObject);
@@ -102,9 +103,26 @@ public class MainVerticle extends AbstractVerticle {
 
 		ConfigRetriever configRetriever = ConfigRetriever.create(vertx, options);
 
+		configRetriever.getConfig(jsonObjectAsyncResult -> {
+			if (jsonObjectAsyncResult.failed()) {
+				System.err.println("failed to load the config file at -> (filePath) " + CONFIG_FILE_PATH);
+				Throwable throwable = jsonObjectAsyncResult.cause();
+				System.err.println("got -> (throwable) " + throwable);
+				System.err.println("got -> (throwableClass) " + throwable.getClass());
+				System.err.println("got -> (throwableMessage) " + throwable.getMessage());
+				System.err.println("got -> (throwableStackTrace) " + throwable.getStackTrace());
+				System.err.println("got -> (throwableCause) " + throwable.getCause());
+			} else {
+				JsonObject configJsonObject = jsonObjectAsyncResult.result();
+				System.out.println("got -> (configJsonObject) " + configJsonObject);
+			}
+		});
+
+		/*
 		Future<JsonObject> configFuture = configRetriever.getConfig();
 		JsonObject configJsonObject = configFuture.result();
 		System.out.println("got -> (configJsonObject) " + configJsonObject);
+		*/
 	}
 
 	private void initializeAndConfigureHttpServer(Promise<Void> promise) {
