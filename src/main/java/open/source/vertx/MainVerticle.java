@@ -1,18 +1,28 @@
 package open.source.vertx;
 
+import java.util.Map;
+
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class MainVerticle extends AbstractVerticle {
 
+	private static final String HTTP_SERVER_HOST = "localhost";
 	private static final Integer HTTP_SERVER_LISTENING_PORT = 8888;
+	private static final String HTTP_SERVER_CONFIG_PATH = "/conf";
 
 
 	private static Handler<HttpServerRequest> HTTP_SERVER_REQUEST_HANDLER = (httpServerRequest) -> {
@@ -37,8 +47,60 @@ public class MainVerticle extends AbstractVerticle {
 
 	private void loadApplicationPropertiesFromConfigFile() {
 
-		// TODO
-		
+		System.out.println("load application properties from config file");
+		Map<String, String> existingEnvironmentVariables = System.getenv();
+		for (String key : existingEnvironmentVariables.keySet()) {
+			String value = existingEnvironmentVariables.get(key);
+			System.out.println(key + " : " + value);
+		}
+
+		JsonObject httpJsonObject = new JsonObject()
+				.put("host", HTTP_SERVER_HOST)
+				.put("port", HTTP_SERVER_LISTENING_PORT)
+				.put("path", HTTP_SERVER_CONFIG_PATH);
+		ConfigStoreOptions httpStore = new ConfigStoreOptions()
+				.setType("http")
+				.setConfig(httpJsonObject);
+
+		JsonObject fileJsonObject = new JsonObject()
+				.put("path", "config.json");
+		ConfigStoreOptions fileStore = new ConfigStoreOptions()
+				.setType("file")
+				.setConfig(fileJsonObject);
+
+		ConfigStoreOptions systemPropertyStore = new ConfigStoreOptions()
+				.setType("sys");
+
+		ConfigRetrieverOptions options = new ConfigRetrieverOptions()
+				.addStore(httpStore)
+				.addStore(fileStore)
+				.addStore(systemPropertyStore);
+
+		// https://vertx.io/docs/vertx-config/java/
+		// https://github.com/vert-x3/vertx-config/blob/master/vertx-config/src/main/java/examples/ConfigExamples.java
+
+		/*
+		JsonObject allJsonFiles = new JsonObject()
+				.put("pattern", "dir/*json");
+		JsonObject allPropertyFiles = new JsonObject()
+				.put("pattern", "dir/*.properties")
+				.put("format", "properties");
+
+		JsonArray jsonArray = new JsonArray().add(allJsonFiles).add(allPropertyFiles);
+
+		JsonObject pathJsonObject = new JsonObject()
+				.put("path", "config")
+				.put("filesets", jsonArray);
+		ConfigStoreOptions dir = new ConfigStoreOptions()
+				.setType("directory")
+				.setConfig(pathJsonObject);
+		*/
+
+		ConfigRetriever configRetriever = ConfigRetriever.create(vertx, options);
+
+		Future<JsonObject> configFuture = configRetriever.getConfig();
+		JsonObject configJsonObject = configFuture.result();
+		System.out.println("got -> (configJsonObject) " + configJsonObject);
 	}
 
 	private void initializeAndConfigureHttpServer(Promise<Void> promise) {
@@ -57,7 +119,7 @@ public class MainVerticle extends AbstractVerticle {
 	@Override
 	public void start(Promise<Void> promise) throws Exception {
 
-		log.info("start -> (promise) {}", promise);
+		System.out.println("start -> (promise) " + promise);
 		loadApplicationPropertiesFromConfigFile();
 		initializeAndConfigureHttpServer(promise);
 	}

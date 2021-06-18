@@ -1,0 +1,11 @@
+{
+	"logging.level.root" : "INFO",
+	"logging.level.org.springframework.web" : "WARN",
+	"logging.file.max-size" : "64MB",
+	"logging.file.max-history" : "2147483647",
+	"logging.file.total-size-cap" : "512MB",
+	"logging.pattern.file" : "[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%X{requestId}] [%level] [%class] [%M] [Line %L] : %m%n",
+	"log4j.appender.file" : "org.apache.log4j.RollingFileAppender",
+	"logging.file" : "./logs/vert-x-application.log",
+	"logging.file.name" : "./logs/vert-x-application.log"
+}
