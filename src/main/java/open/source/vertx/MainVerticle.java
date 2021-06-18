@@ -47,6 +47,8 @@ public class MainVerticle extends AbstractVerticle {
 
 	private void loadApplicationPropertiesFromConfigFile() {
 
+		// TODO : try the resource bundle approach
+
 		System.out.println("load application properties from config file");
 		Map<String, String> existingEnvironmentVariables = System.getenv();
 		for (String key : existingEnvironmentVariables.keySet()) {
@@ -54,6 +56,7 @@ public class MainVerticle extends AbstractVerticle {
 			System.out.println(key + " : " + value);
 		}
 
+		/*
 		JsonObject httpJsonObject = new JsonObject()
 				.put("host", HTTP_SERVER_HOST)
 				.put("port", HTTP_SERVER_LISTENING_PORT)
@@ -61,6 +64,7 @@ public class MainVerticle extends AbstractVerticle {
 		ConfigStoreOptions httpStore = new ConfigStoreOptions()
 				.setType("http")
 				.setConfig(httpJsonObject);
+		*/
 
 		JsonObject fileJsonObject = new JsonObject()
 				.put("path", "config.json");
@@ -72,7 +76,7 @@ public class MainVerticle extends AbstractVerticle {
 				.setType("sys");
 
 		ConfigRetrieverOptions options = new ConfigRetrieverOptions()
-				.addStore(httpStore)
+		//		.addStore(httpStore)
 				.addStore(fileStore)
 				.addStore(systemPropertyStore);
 
