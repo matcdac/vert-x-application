@@ -23,7 +23,7 @@ public class MainVerticle extends AbstractVerticle {
 	private static final String HTTP_SERVER_HOST = "localhost";
 	private static final Integer HTTP_SERVER_LISTENING_PORT = 8888;
 	private static final String HTTP_SERVER_CONFIG_PATH = "/conf";
-	private static final String CONFIG_FILE_PATH = "config.json";
+	private static final String CONFIG_FILE_PATH = "conf/config.json";
 
 
 	private static Handler<HttpServerRequest> HTTP_SERVER_REQUEST_HANDLER = (httpServerRequest) -> {
