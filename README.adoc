@@ -26,28 +26,27 @@ wget https://github.com/matcdac/vert-x-application/archive/refs/heads/master.zip
 ```
 
 
-## Maven
+## Maven Build
 
-- Build
 ```
 mvn -Dmaven.artifact.threads=25 clean eclipse:eclipse -DdownloadSources=true dependency:go-offline dependency:resolve-plugins install
 ```
 
 
-## Deploy
+## Deploy Locally
 ```
-java -jar target/vert-x-application-1.0.0-SNAPSHOT-fat.jar
+java -jar target/vert-x-application-1.0.0-SNAPSHOT-executable.jar
 ```
 
 
 ## Verify
 
-Hit the following url on browser
+Hit the following url on any browser
 
-[http://localhost:8888/](http://localhost:8888/)
+http://localhost:8888/
 
 
-## Check
+## Check Port
 ```
 jps | grep "vert-x-application"
 ```
