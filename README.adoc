@@ -1,4 +1,7 @@
+
+
 = vert-x-application
+
 
 ## Clone Repository
 
@@ -22,6 +25,7 @@ gh repo clone matcdac/vert-x-application
 wget https://github.com/matcdac/vert-x-application/archive/refs/heads/master.zip
 ```
 
+
 ## Maven
 
 - Build
@@ -29,13 +33,43 @@ wget https://github.com/matcdac/vert-x-application/archive/refs/heads/master.zip
 mvn -Dmaven.artifact.threads=25 clean eclipse:eclipse -DdownloadSources=true dependency:go-offline dependency:resolve-plugins install
 ```
 
-== Vert.x Application Info
+
+## Deploy
+```
+java -jar target/vert-x-application-1.0.0-SNAPSHOT-fat.jar
+```
+
+
+## Verify
+
+Hit the following url on browser
+
+[http://localhost:8888/](http://localhost:8888/)
+
+
+## Check
+```
+jps | grep "vert-x-application"
+```
+
+
+## Kill
+```
+sudo kill -9 `sudo lsof -t -i:8888`
+```
+
+
+== Vert.x Official
+
+
+## Application Info
 
 image:https://img.shields.io/badge/vert.x-4.1.0-purple.svg[link="https://vertx.io"]
 
 This application was generated using http://start.vertx.io
 
-== Vert.x Building
+
+## Maven Friendly
 
 To launch your tests:
 ```
@@ -52,7 +86,8 @@ To run your application:
 ./mvnw clean compile exec:java
 ```
 
-== Vert.x Help
+
+## Help
 
 * https://vertx.io/docs/[Vert.x Documentation]
 * https://stackoverflow.com/questions/tagged/vert.x?sort=newest&pageSize=15[Vert.x Stack Overflow]
