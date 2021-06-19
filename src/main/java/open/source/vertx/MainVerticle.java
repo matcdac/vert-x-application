@@ -29,9 +29,24 @@ public class MainVerticle extends AbstractVerticle {
 	private static Handler<HttpServerRequest> HTTP_SERVER_REQUEST_HANDLER = (httpServerRequest) -> {
 
 		log.info("http server request handler -> (httpServerRequest) {}", httpServerRequest);
-		HttpServerResponse httpServerResponse = httpServerRequest.response()
-				.putHeader("content-type", "text/plain");
-		httpServerResponse.end("Hello from Vert.x!");
+
+		String requestPath = httpServerRequest.path();
+		log.info("identified -> (requestPath) {}", requestPath);
+
+		HttpServerResponse httpServerResponse = httpServerRequest.response();
+		Future<Void> voidFuture = null;
+
+		// path based routing can be done from here
+		if (requestPath.startsWith("/health")) {
+			httpServerResponse = httpServerResponse.putHeader("content-type", "text/plain");
+			voidFuture = httpServerResponse.end("UP");
+		} else if (requestPath.startsWith("/json")) {
+			httpServerResponse = httpServerResponse.putHeader("content-type", "application/json");
+			voidFuture = httpServerResponse.end("{\"key\":\"value\", \"arrayKey\":[\"arrayValue1\", \"arrayValue2\"]}");
+		} else {
+			httpServerResponse = httpServerResponse.putHeader("content-type", "text/plain");
+			voidFuture = httpServerResponse.end("Hello from Vert.x!");
+		}
 	};
 
 	private static void rejectOrResolvePromise(Promise<Void> promiseRequest, AsyncResult<HttpServer> taskResponse) {
