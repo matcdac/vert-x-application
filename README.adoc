@@ -3,6 +3,34 @@
 = vert-x-application
 
 
+## Generate Vert.x Application (Java Template)
+
+- Command Line using Maven
+
+instructions by Redhat
+
+```
+mvn io.reactiverse:vertx-maven-plugin::setup
+```
+
+Provide the following details when prompted:
+```
+	- project groupId
+	- project artificatId
+	- project version
+	- Vert.x version
+	- verticle class name
+```
+
+- Website
+
+instruction by Vert.x
+
+http://start.vertx.io
+
+Check the dependencies you would like to include in your project
+
+
 ## Clone Repository
 
 - HTTPS
@@ -26,16 +54,50 @@ wget https://github.com/matcdac/vert-x-application/archive/refs/heads/master.zip
 ```
 
 
-## Maven Build
+## Launch Tests
+
+- Vert.x
+
+```
+./mvnw clean test
+```
+
+
+## Maven Build and Package
+
+- Turquoise Space
 
 ```
 mvn -Dmaven.artifact.threads=25 clean eclipse:eclipse -DdownloadSources=true dependency:go-offline dependency:resolve-plugins install
 ```
 
+- Vert.x
 
-## Deploy Locally
+```
+./mvnw clean package
+```
+
+
+## Deploy on Local
+
+- Turquoise Space
+
 ```
 java -jar target/vert-x-application-1.0.0-SNAPSHOT-executable.jar
+```
+
+- Vert.x
+
+```
+./mvnw clean compile exec:java
+```
+
+- Redhat
+
+Listens for any changes and re-deploys
+
+```
+mvn clean compile vertx:run
 ```
 
 
@@ -51,6 +113,7 @@ http://localhost:8888/
 jps | grep "vert-x-application"
 ```
 
+
 ## Kill
 
 - Elegant
@@ -58,45 +121,18 @@ jps | grep "vert-x-application"
 kill `lsof -t -i:8888`
 ```
 
-- Forcefully
+- Forceful
 ```
 kill -9 `lsof -t -i:8888`
 ```
 
 
-== Vert.x Official
-
-
-## Application Info
-
-image:https://img.shields.io/badge/vert.x-4.1.0-purple.svg[link="https://vertx.io"]
-
-This application was generated using http://start.vertx.io
-
-
-## Maven Friendly
-
-To launch your tests:
-```
-./mvnw clean test
-```
-
-To package your application:
-```
-./mvnw clean package
-```
-
-To run your application:
-```
-./mvnw clean compile exec:java
-```
-
-
-## Help
+## Help & References
 
 * https://vertx.io/docs/[Vert.x Documentation]
 * https://stackoverflow.com/questions/tagged/vert.x?sort=newest&pageSize=15[Vert.x Stack Overflow]
 * https://groups.google.com/forum/?fromgroups#!forum/vertx[Vert.x User Group]
 * https://gitter.im/eclipse-vertx/vertx-users[Vert.x Gitter]
 
+* https://www.youtube.com/watch?v=LsaXy7SRXMY&list=PLkeCJDaCC2ZsnySdg04Aq9D9FpAZY6K5D&index=1
 

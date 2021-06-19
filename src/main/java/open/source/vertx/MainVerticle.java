@@ -133,6 +133,9 @@ public class MainVerticle extends AbstractVerticle {
 		httpServer = httpServer.requestHandler(HTTP_SERVER_REQUEST_HANDLER);
 		log.info("got -> (httpServer) {}", httpServer);
 
+		// easy way, where promise was not passed in the start() method as argument
+		// Future<HttpServer> httpServerFuture = httpServer.listen(HTTP_SERVER_LISTENING_PORT);
+
 		httpServer = httpServer.listen(HTTP_SERVER_LISTENING_PORT,
 				httpServerAsyncResult -> rejectOrResolvePromise(promise, httpServerAsyncResult));
 		log.info("got -> (httpServer) {}", httpServer);
@@ -145,5 +148,7 @@ public class MainVerticle extends AbstractVerticle {
 		loadApplicationPropertiesFromConfigFile();
 		initializeAndConfigureHttpServer(promise);
 	}
+
+	// TODO : on stop -> decommission
 
 }
