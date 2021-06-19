@@ -14,21 +14,18 @@ mvn io.reactiverse:vertx-maven-plugin::setup
 ```
 
 Provide the following details when prompted:
-```
+
 	- project groupId
 	- project artificatId
 	- project version
 	- Vert.x version
 	- verticle class name
-```
 
-- Website
+- Vert.x Website
 
-instruction by Vert.x
+http://start.vertx.io[Vert.x Official]
 
-http://start.vertx.io
-
-Check the dependencies you would like to include in your project
+Click on the checkboxes of the dependencies, which you would like to include in your project
 
 
 ## Clone Repository
@@ -105,7 +102,7 @@ mvn clean compile vertx:run
 
 Hit the following url on any browser
 
-http://localhost:8888/
+http://localhost:8888/[vert-x-application Instance]
 
 
 ## Check Port
@@ -134,5 +131,5 @@ kill -9 `lsof -t -i:8888`
 * https://groups.google.com/forum/?fromgroups#!forum/vertx[Vert.x User Group]
 * https://gitter.im/eclipse-vertx/vertx-users[Vert.x Gitter]
 
-* https://www.youtube.com/watch?v=LsaXy7SRXMY&list=PLkeCJDaCC2ZsnySdg04Aq9D9FpAZY6K5D&index=1
+* https://www.youtube.com/watch?v=LsaXy7SRXMY&list=PLkeCJDaCC2ZsnySdg04Aq9D9FpAZY6K5D&index=1[Vert.x YouTube PlayList by Redhat]
 
