@@ -14,12 +14,13 @@ mvn io.reactiverse:vertx-maven-plugin::setup
 ```
 
 Provide the following details when prompted:
-
-	- project groupId
-	- project artificatId
-	- project version
-	- Vert.x version
-	- verticle class name
+```
+	project groupId
+	project artificatId
+	project version
+	Vert.x version
+	verticle class name
+```
 
 - Vert.x Website
 
