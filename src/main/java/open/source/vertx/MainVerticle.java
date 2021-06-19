@@ -15,7 +15,9 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.Router;
 import lombok.extern.log4j.Log4j2;
+import open.source.vertx.route.Handlers;
 
 @Log4j2
 public class MainVerticle extends AbstractVerticle {
@@ -26,6 +28,7 @@ public class MainVerticle extends AbstractVerticle {
 	private static final String CONFIG_FILE_PATH = "conf/config.json";
 
 
+	@Deprecated
 	private static Handler<HttpServerRequest> HTTP_SERVER_REQUEST_HANDLER = (httpServerRequest) -> {
 
 		log.info("http server request handler -> (httpServerRequest) {}", httpServerRequest);
@@ -49,6 +52,19 @@ public class MainVerticle extends AbstractVerticle {
 		}
 	};
 
+	private Router getRouter() {
+
+		Router router = Router.router(vertx);
+
+		// specify the api path based router here
+
+		router.get("/").handler(Handlers.DEFAULT_REQUEST_HANDLER);
+		router.get("/health").handler(Handlers.HEALTH_REQUEST_HANDLER);
+		router.get("/greeting/:name").handler(Handlers.GREETING_REQUEST_HANDLER);
+
+		return router;
+	}
+
 	private static void rejectOrResolvePromise(Promise<Void> promiseRequest, AsyncResult<HttpServer> taskResponse) {
 
 		log.info("reject or resolve promise -> (promiseRequest) {} (taskResponse) {}", promiseRequest, taskResponse);
@@ -62,8 +78,6 @@ public class MainVerticle extends AbstractVerticle {
 	}
 
 	private void loadApplicationPropertiesFromConfigFile() {
-
-		// TODO : try the resource bundle approach
 
 		System.out.println("load application properties from config file");
 		Map<String, String> existingEnvironmentVariables = System.getenv();
@@ -145,7 +159,10 @@ public class MainVerticle extends AbstractVerticle {
 		HttpServer httpServer = vertx.createHttpServer();
 		log.info("got -> (httpServer) {}", httpServer);
 
-		httpServer = httpServer.requestHandler(HTTP_SERVER_REQUEST_HANDLER);
+		// messy approach
+		// httpServer = httpServer.requestHandler(HTTP_SERVER_REQUEST_HANDLER);
+
+		httpServer = httpServer.requestHandler(getRouter());
 		log.info("got -> (httpServer) {}", httpServer);
 
 		// easy way, where promise was not passed in the start() method as argument
